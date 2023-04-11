@@ -12,5 +12,3 @@ export interface DB {
   autoLoadEntities: boolean;
   synchronize: boolean;
 }
-
-// export type DatabaseName = 'test_db' | 'TEST_DB';

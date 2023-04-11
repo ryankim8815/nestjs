@@ -1,7 +1,7 @@
-/**
- * typeOrmModule.forRoot()를 사용하지 않고,
- * 직접 DataSource를 생성하여 사용하는 방법
- *  */
+// /**
+//  * typeOrmModule.forRoot()를 사용하지 않고,
+//  * 직접 DataSource를 생성하여 사용하는 방법
+//  *  */
 
 // import { DataSource } from 'typeorm';
 // import { AppModule } from '../app.module';

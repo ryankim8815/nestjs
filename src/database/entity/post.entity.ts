@@ -9,7 +9,7 @@ import {
 import { User } from './user.entity';
 import { PostTag } from './postTag.entity';
 
-@Entity({ name: 'post' }) // 테이블 이름
+@Entity({ name: 'post' })
 export class Post {
   @PrimaryGeneratedColumn('uuid')
   postId: string; // Primary Key uid (back data)
@@ -41,15 +41,12 @@ export class Post {
   })
   updatedAt: Date;
 
-  /**
-   * 1 : 1 관계 설정
-   * @OneToOne -> 해당 엔티티(User) To 대상 엔티티(UserContact)
-   *              하나의 유저는 하나의 개인정보를 갖는다.
-   */
-  @ManyToOne(() => User, (user) => user.posts)
-  // @JoinColumn({ name: 'userId' })
-  user: User;
-  @OneToMany(() => PostTag, (postTag) => postTag.post)
-  // @JoinColumn({ name: 'userId' })
-  postTags: PostTag[];
+  // /////////////////////////////
+  // @ManyToOne(() => User, (user) => user.posts)
+  // // @JoinColumn({ name: 'userId' })
+  // user: User;
+  // /////////////////////////////
+  // @OneToMany(() => PostTag, (postTag) => postTag.post)
+  // // @JoinColumn({ name: 'userId' })
+  // postTags: PostTag[];
 }

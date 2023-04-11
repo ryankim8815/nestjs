@@ -1,26 +1,25 @@
-import {
-  Column,
-  Entity,
-  PrimaryGeneratedColumn,
-  JoinColumn,
-  OneToOne,
-} from 'typeorm';
-import { User } from './user.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ name: 'userContact' })
-export class UserContact {
+@Entity({ name: 'code' })
+export class Code {
   @PrimaryGeneratedColumn('uuid')
-  userContactId: string; // Primary Key uid (back data)
+  codeId: string;
 
   @Column({
-    type: 'int',
+    type: 'varchar',
+    unique: true,
   })
-  countryCode: number;
+  email: string;
 
   @Column({
     type: 'varchar',
   })
-  email: string;
+  code: string;
+
+  @Column({
+    type: 'varchar',
+  })
+  ip: string;
 
   @Column({
     type: 'boolean', // 0: 삭제아님, 1: 삭제됨
@@ -38,8 +37,4 @@ export class UserContact {
     default: () => 'CURRENT_TIMESTAMP',
   })
   updatedAt: Date;
-
-  @OneToOne(() => User)
-  @JoinColumn({ name: 'userId' })
-  user: User;
 }

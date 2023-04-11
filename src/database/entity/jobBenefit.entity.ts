@@ -6,7 +6,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 
-@Entity({ name: 'jobBenefit' }) // 테이블 이름
+@Entity({ name: 'jobBenefit' })
 export class JobBenefit {
   @PrimaryGeneratedColumn('uuid')
   jobBenefitId: string;

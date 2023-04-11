@@ -18,8 +18,12 @@ export class ResumeTag {
    * @OneToOne -> 해당 엔티티(User) To 대상 엔티티(UserContact)
    *              하나의 유저는 하나의 개인정보를 갖는다.
    */
-  @ManyToOne(() => Resume, (resume) => resume.resumeTags)
+  // @ManyToOne(() => Resume, (resume) => resume.resumeTags)
+  @ManyToOne(() => Resume)
+  @JoinColumn({ name: 'resumeId' })
   resume: Resume;
-  @ManyToOne(() => Tag, (tag) => tag.jobTags)
+  // @ManyToOne(() => Tag, (tag) => tag.jobTags)
+  @ManyToOne(() => Tag)
+  @JoinColumn({ name: 'tagId' })
   tag: Tag;
 }

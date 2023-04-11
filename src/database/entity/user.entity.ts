@@ -5,14 +5,24 @@ import {
   JoinColumn,
   OneToOne,
   OneToMany,
+  ManyToOne,
+  JoinTable,
 } from 'typeorm';
 import { Post } from './post.entity';
+import { Code } from './Code.entity';
 import { UserTag } from './userTag.entity';
+import { Tag } from './tag.entity';
 
-@Entity({ name: 'user' }) // 테이블 이름
+@Entity({ name: 'user' })
 export class User {
   @PrimaryGeneratedColumn('uuid')
   userId: string;
+
+  @Column({
+    type: 'varchar',
+    unique: true,
+  })
+  email: string;
 
   @Column({
     type: 'varchar',
@@ -24,21 +34,24 @@ export class User {
     unique: true,
     length: 20,
   })
-  username: string;
+  nickname: string;
 
   @Column({
     type: 'enum',
-    enum: ['admin', 'worker', 'humanResource', 'headHunter'],
+    enum: ['admin', 'employee', 'humanResource', 'headHunter'],
+    default: 'employee',
   })
   userType: string;
 
   @Column({
-    type: 'boolean', // 0: 구인/구직중, 1: 구인/구직완료
+    type: 'boolean', // 0: 구인/구직아님, 1: 구인/구직중
+    default: false,
   })
   userStatus: boolean;
 
   @Column({
     type: 'boolean', // 0: 삭제아님, 1: 삭제됨
+    default: false,
   })
   isDeleted: boolean;
 
@@ -60,16 +73,23 @@ export class User {
   })
   withdrawAt: Date;
 
-  //   /**
-  //    * 1 : 1 관계 설정
-  //    * @OneToOne -> 해당 엔티티(User) To 대상 엔티티(UserContact)
-  //    *              하나의 유저는 하나의 개인정보를 갖는다.
-  //    */
+  @ManyToOne(() => Tag, { nullable: true })
+  @JoinColumn({ name: 'tagId' })
+  tag: Tag;
   //   @OneToOne(() => UserContact)
   //   @JoinColumn({ name: 'userContactId' })
   //   userContact: UserContact;
-  @OneToMany(() => UserTag, (userTag) => userTag.user)
-  userTags: UserTag[];
-  @OneToMany(() => Post, (post) => post.user)
-  posts: Post[];
+  // /////////////////////////////
+  // @OneToMany(() => UserTag, (userTag) => userTag.user)
+  // @JoinTable({ name: 'userTag' }) // 새로운 테이블의 이름을 정의해줌
+  // userTags: UserTag[];
+  // @OneToMany(() => Post, (post) => post.user)
+  // posts: Post[];
+  // /////////////////////////////
+  // @OneToOne(() => Code, { cascade: true, eager: true })
+  // @JoinColumn({ name: 'email', referencedColumnName: 'email' })
+  // code: Code;
+
+  // @OneToOne(() => Code, (code) => code.user)
+  // code: Code;
 }

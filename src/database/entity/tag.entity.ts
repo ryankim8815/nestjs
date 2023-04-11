@@ -12,7 +12,7 @@ import { PostTag } from './postTag.entity';
 import { UserTag } from './userTag.entity';
 import { JobTag } from './jobTag.entity';
 
-@Entity({ name: 'tag' }) // 테이블 이름
+@Entity({ name: 'tag' })
 export class Tag {
   @PrimaryGeneratedColumn('uuid')
   tagId: string;
@@ -39,21 +39,16 @@ export class Tag {
   })
   updatedAt: Date;
 
-  /**
-   * 1 : 1 관계 설정
-   * @OneToOne -> 해당 엔티티(User) To 대상 엔티티(UserContact)
-   *              하나의 유저는 하나의 개인정보를 갖는다.
-   */
   @ManyToOne(() => User)
   @JoinColumn({ name: 'userId' })
   user: User;
 
-  @OneToMany(() => CompanyTag, (companyTag) => companyTag.tag)
-  companyTags: CompanyTag[];
-  @OneToMany(() => PostTag, (postTag) => postTag.tag)
-  postTags: PostTag[];
-  @OneToMany(() => UserTag, (userTag) => userTag.tag)
-  userTags: UserTag[];
-  @OneToMany(() => JobTag, (jobTag) => jobTag.tag)
-  jobTags: JobTag[];
+  // @OneToMany(() => CompanyTag, (companyTag) => companyTag.tag)
+  // companyTags: CompanyTag[];
+  // @OneToMany(() => PostTag, (postTag) => postTag.tag)
+  // postTags: PostTag[];
+  // @OneToMany(() => UserTag, (userTag) => userTag.tag)
+  // userTags: UserTag[];
+  // @OneToMany(() => JobTag, (jobTag) => jobTag.tag)
+  // jobTags: JobTag[];
 }

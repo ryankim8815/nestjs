@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { Resume } from './resume.entity';
 
-@Entity({ name: 'resumeCareer' }) // 테이블 이름
+@Entity({ name: 'resumeCareer' })
 export class ResumeCareer {
   @PrimaryGeneratedColumn('uuid')
   resumeCareerId: string;
@@ -37,12 +37,7 @@ export class ResumeCareer {
   })
   endAt: Date;
 
-  /**
-   * N : 1 관계 설정
-   * @ManyToOne -> 해당 엔티티(ResumeCareer) To 대상 엔티티(Resume)
-   *              여러개의 ResumeCareer는 하나의 ResumeId를 갖는다.
-   */
   @ManyToOne(() => Resume)
   @JoinColumn({ name: 'resumeId' })
-  user: Resume;
+  resume: Resume;
 }

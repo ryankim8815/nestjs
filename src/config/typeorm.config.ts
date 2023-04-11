@@ -15,7 +15,8 @@ export default class TypeOrmConfig {
       username: config.username,
       password: config.password,
       database: config.database,
-      entities: [__dirname + '/../database/entity/**/*.entity{.ts,.js}'],
+      autoLoadEntities: true,
+      // entities: [__dirname + '/../database/entity/*.entity{.ts,.js}'],
       synchronize: config.synchronize,
       logging: config.logging,
     };

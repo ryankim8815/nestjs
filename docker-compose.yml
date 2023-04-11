@@ -1,0 +1,65 @@
+version: '3.0'
+
+services:
+  db_mysql:
+    image: mysql:latest
+    ports:
+      - 5501:3306
+    volumes:
+      - ./docker/db/mysql:/var/lib/mysql
+    restart: always
+    environment:
+      TZ: 'Asia/Seoul'
+      MYSQL_ROOT_PASSWORD: root_pass
+      MYSQL_DATABASE: docker_test_mysql
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker_pass
+    # command:
+    # - --lower_case_table_names=2
+    # - --skip-name-resolve
+
+  db_postgres:
+    image: postgres:latest
+    ports:
+      - 5502:5432
+    volumes:
+      - ./docker/db/postgres:/var/lib/postgres
+    restart: always
+    environment:
+      POSTGRES_USER: 'docker'
+      POSTGRES_PASSWORD: 'docker_pass'
+
+  db_redis:
+    image: redis:latest
+    ports:
+      - 5503:6379
+    volumes:
+      - ./docker/db_redis_data:/var/lib/redis
+    restart: always
+
+  db_mongo:
+    image: mongo:latest
+    ports:
+      - 5504:27017
+    volumes:
+      - ./docker/db/mongo:/var/lib/mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root_pass
+      MONGO_INITDB_DATABASE: docker_test_mongo
+      MONGO_INITDB_USER: docker
+      MONGO_INITDB_PASSWORD: docker_pass
+
+  # db_mongo-express:
+  #   image: mongo-express:latest
+  #   # volumes:
+  #   #   - ./db_data:/var/lib/mongo-express
+  #   ports:
+  #     - 5505:27017
+  #   restart: always
+  #   environment:
+  #     ME_CONFIG_MONGODB_ADMINUSERNAME: root
+  #     ME_CONFIG_MONGODB_ADMINPASSWORD: root_pass
+  #     ME_CONFIG_OPTIONS: '{ "useUnifiedTopology": true }'
+  #     ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/

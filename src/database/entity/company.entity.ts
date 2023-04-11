@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { CompanyTag } from './companyTag.entity';
 
-@Entity({ name: 'company' }) // 테이블 이름
+@Entity({ name: 'company' })
 export class Company {
   @PrimaryGeneratedColumn('uuid')
   companyId: string;
@@ -61,11 +61,6 @@ export class Company {
   })
   updatedAt: Date;
 
-  /**
-   * 1 : 1 관계 설정
-   * @OneToOne -> 해당 엔티티(User) To 대상 엔티티(UserContact)
-   *              하나의 유저는 하나의 개인정보를 갖는다.
-   */
-  @OneToMany(() => CompanyTag, (companyTag) => companyTag.company)
-  companyTags: CompanyTag[];
+  // @OneToMany(() => CompanyTag, (companyTag) => companyTag.company)
+  // companyTags: CompanyTag[];
 }

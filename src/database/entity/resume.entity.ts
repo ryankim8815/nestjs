@@ -9,7 +9,7 @@ import {
 import { User } from './user.entity';
 import { ResumeTag } from './resumeTag.entity';
 
-@Entity({ name: 'resume' }) // 테이블 이름
+@Entity({ name: 'resume' })
 export class Resume {
   @PrimaryGeneratedColumn('uuid')
   resumeId: string;
@@ -51,14 +51,9 @@ export class Resume {
   })
   updatedAt: Date;
 
-  /**
-   * 1 : 1 관계 설정
-   * @OneToOne -> 해당 엔티티(User) To 대상 엔티티(UserContact)
-   *              하나의 유저는 하나의 개인정보를 갖는다.
-   */
   @OneToOne(() => User)
   @JoinColumn({ name: 'userId' })
   user: User;
-  @OneToMany(() => ResumeTag, (resumeTag) => resumeTag.resume)
-  resumeTags: ResumeTag[];
+  // @OneToMany(() => ResumeTag, (resumeTag) => resumeTag.resume)
+  // resumeTags: ResumeTag[];
 }

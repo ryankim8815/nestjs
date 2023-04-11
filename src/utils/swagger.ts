@@ -22,7 +22,7 @@ export function setupSwagger(app: INestApplication): void {
     return;
   }
 
-  //   if (env === 'localhost') {
+  // if (env === 'localhost') {
   const options = new DocumentBuilder()
     .setTitle(`개발자A의 사이드 프로젝트`)
     .setDescription('사이드 프로젝트')
@@ -40,9 +40,8 @@ export function setupSwagger(app: INestApplication): void {
     swaggerOptions: {
       defaultModelsExpandDepth: -1,
     },
-    // customfavIcon:
-    //   'url',
+
     customSiteTitle: `Swagger Docs`,
   });
-  //   }
+  // }
 }

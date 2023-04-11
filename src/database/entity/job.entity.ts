@@ -13,7 +13,7 @@ import { JobPosition } from './jobPosition.entity';
 import { JobBenefit } from './jobBenefit.entity';
 import { JobTag } from './jobTag.entity';
 
-@Entity({ name: 'job' }) // 테이블 이름
+@Entity({ name: 'job' })
 export class Job {
   @PrimaryGeneratedColumn('uuid')
   jobId: string;
@@ -83,11 +83,6 @@ export class Job {
   })
   updatedAt: Date;
 
-  /**
-   * N : 1 관계 설정
-   * @ManyToOne -> 해당 엔티티(ResumeEducation) To 대상 엔티티(Resume)
-   *              여러개의 ResumeEducation는 하나의 ResumeId를 갖는다.
-   */
   @ManyToOne(() => User)
   @JoinColumn({ name: 'userId' })
   user: User;
@@ -105,6 +100,6 @@ export class Job {
   @JoinColumn({ name: 'jobBenefitId' })
   jobBenefit: JobBenefit;
 
-  @OneToMany(() => JobTag, (jobTag) => jobTag.job)
-  jobTags: JobTag[];
+  // @OneToMany(() => JobTag, (jobTag) => jobTag.job)
+  // jobTags: JobTag[];
 }

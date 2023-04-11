@@ -7,11 +7,12 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { UsersService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UserService } from './user.service';
+import * as UserDto from './user.dto';
+
 import {
   ApiBody,
+  ApiParam,
   ApiCreatedResponse,
   ApiOperation,
   ApiTags,
@@ -19,71 +20,106 @@ import {
 
 @Controller('users')
 @ApiTags('유저 관련 api')
-export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
-
-  // @Post()
-  // create(@Body() createUserDto: CreateUserDto) {
-  //   return this.usersService.create(createUserDto);
-  // }
-  // @Post()
-  // // create(@Body() createUserDto: CreateUserDto) {
-  // create(@Body() id: number, firstName: string, lastName: string) {
-  //   // return this.usersService.create(createUserDto);
-  //   return this.usersService.create(id, firstName, lastName);
-  // }
-
-  // next.js처럼 파일 트리가 Router 역할
-  // http://localhost:5000/users/users == @Get('/users')
-  // @Get('/test')
-  // test() {
-  //   // return 'test success~!';
-  //   return this.usersService.test();
-  // }
+export class UserController {
+  constructor(private readonly userService: UserService) {}
 
   @ApiOperation({
-    summary: '전체 유저 정보 가져오기',
+    summary: '(테스트용)전체 유저 정보 가져오기',
     description: '전체 유저 정보를 확인하기 위해 호출',
   })
   @ApiBody({
     description: `요청에 필요한 값 없음`,
-    // type: InfoDto.StationSignInRequest,
   })
   @ApiCreatedResponse({
-    description: `returnCode : 0(성공 또는 실패번호)  
-      returnMessage : 관련 메세지`,
-    // type: InfoDto.StationSignInResponse,
+    description: `jason array 형태로 유저 정보 반환`,
   })
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  async allUser() {
+    return await this.userService.findAll();
   }
 
+  @Get('/register/email/:email/code')
   @ApiOperation({
-    summary: 'userId로 조회된 유저 정보 가져오기',
-    description: '특정 유저 정보를 확인하기 위해 호출',
+    summary: '자체 회원가입을 위한 이메일 인증번호 발송',
+    description: '이메일 인증번호 발송을 위해 호출',
   })
-  @ApiBody({
-    description: `요청에 필요한 값 없음`,
-    // type: InfoDto.StationSignInRequest,
+  @ApiParam({
+    name: 'email',
+    description: `이메일 중복체크 및 인증번호 발송을 위한 이메일`,
+    type: UserDto.Request.SendVerificationEmailDto,
   })
   @ApiCreatedResponse({
-    description: `returnCode : 0(성공 또는 실패번호)  
-    returnMessage : 관련 메세지`,
-    // type: InfoDto.StationSignInResponse,
+    description: `result: boolean,
+    message: string,
+    data: any,`,
+    type: UserDto.Response.SendVerificationEmailDto,
   })
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  async sendVerificationEmail(@Param('email') email: string) {
+    return await this.userService.sendVerificationEmail(email);
   }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-  //   return this.usersService.update(+id, updateUserDto);
-  // }
+  @Get('/register/email/:email/code/:code')
+  @ApiOperation({
+    summary: '자체 회원가입을 위한 이메일 인증번호 입력값 검증',
+    description: '이메일 인증번호 검증을 위해 호출',
+  })
+  @ApiParam({
+    name: 'email, code',
+    description: `인증번호를 수신받은 이메일, 입력한 인증번호`,
+    type: UserDto.Request.VerifyEmailCodeDto,
+  })
+  @ApiCreatedResponse({
+    description: `result: boolean,
+    message: string,
+    data: any,`,
+    type: UserDto.Response.VerifyEmailCodeDto,
+  })
+  async verifyEmailCode(
+    @Param('email') email: string,
+    @Param('code') code: string,
+  ) {
+    return await this.userService.verifyEmailCode(email, code);
+  }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.usersService.remove(+id);
-  // }
+  @Get('/register/nickname/:nickname')
+  @ApiOperation({
+    summary: '자체 회원가입을 위한 닉네임 중복체크',
+    description: '닉네임 중복체크를 위해 호출',
+  })
+  @ApiParam({
+    name: 'nickname',
+    description: `닉네임 중복체크를 위한 닉네임`,
+    type: UserDto.Request.CheckNicknameDuplicationDto,
+  })
+  @ApiCreatedResponse({
+    description: `result: boolean,
+    message: string,
+    data: any,`,
+    type: UserDto.Response.CheckNicknameDuplicationDto,
+  })
+  async checkNicknameDuplication(@Param('nickname') nickname: string) {
+    return await this.userService.checkNicknameDuplication(nickname);
+  }
+
+  @Post('/register')
+  @ApiOperation({
+    summary: '자체 회원가입 완료를 위한 POST 요청',
+    description: '회원가입을 위해 호출',
+  })
+  @ApiBody({
+    description: `
+    email: 'test@gmail.com',
+    password: 'password',
+    nickname: 'nickname',`,
+    type: UserDto.Request.RegisterUserDto,
+  })
+  @ApiCreatedResponse({
+    description: `result: boolean,
+    message: string,
+    data: any,`,
+    type: UserDto.Response.RegisterUserDto,
+  })
+  async registerUser(@Body() body: UserDto.Request.RegisterUserDto) {
+    return await this.userService.registerUser(body);
+  }
 }
